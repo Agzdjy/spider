@@ -1,8 +1,21 @@
 package main
 
 import (
-	"./douban"
+	"spider/douban"
+	"spider/ziroom"
+	"fmt"
 )
 func main()  {
-	douban.Run()
+	done := make(chan string, 2)
+
+	go func() {
+		douban.Run()
+		done <- "douban"
+	}()
+	go func() {
+		ziroom.Run()
+		done <- "ziroom"
+	}()
+
+	fmt.Print(<- done, "--->", <- done)
 }

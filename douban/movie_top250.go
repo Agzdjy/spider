@@ -10,6 +10,7 @@ import (
 const DOWNLOAD_URL = "https://movie.douban.com/top250/"
 
 func parseInfo(url string) (name, infoList []string, starCon, score []string, nextPage string) {
+	fmt.Println(url)
 	doc, err := goquery.NewDocument(url)
 	if err != nil {
 		fmt.Println(err)
