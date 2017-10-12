@@ -2,11 +2,11 @@ package ziroom
 
 import (
 	"fmt"
-	"os"
 	"strings"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/tealeg/xlsx"
 	"regexp"
+	"spider/util"
 )
 
 const DOWNLOAD_URL = "http://www.ziroom.com/z/nl/z2.html?qwd="
@@ -74,14 +74,9 @@ func parseInfo(url string) (zirooms []ziroom, nextPage string)  {
 	return zirooms, nextPage
 }
 
-func Run()  {
+func Run() (err error) {
 	var allZirooms []ziroom
-	var query string
-
-	args := os.Args[:]
-	if len(args) > 1 {
-		query = args[1]
-	}
+	query := util.GetEnv("query")
 
 	url := DOWNLOAD_URL
 	if query != "" {
@@ -127,5 +122,6 @@ func Run()  {
 	if query != "" {
 		fileName = query + ".xlsx"
 	}
- 	file.Save("./ziroom/" + fileName)
+	err = file.Save(fileName)
+ 	return err
 }

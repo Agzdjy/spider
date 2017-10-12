@@ -1,11 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"spider/douban"
 	"spider/ziroom"
-	"fmt"
 )
-func main()  {
+
+func main() {
 	done := make(chan string, 2)
 
 	go func() {
@@ -17,5 +18,5 @@ func main()  {
 		done <- "ziroom"
 	}()
 
-	fmt.Print(<- done, "--->", <- done)
+	fmt.Print(<-done, "--->", <-done)
 }

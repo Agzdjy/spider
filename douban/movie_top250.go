@@ -1,10 +1,10 @@
 package douban
 
 import (
+	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/tealeg/xlsx"
 	"strings"
-	"fmt"
 )
 
 const DOWNLOAD_URL = "https://movie.douban.com/top250/"
@@ -47,7 +47,7 @@ func parseInfo(url string) (name, infoList []string, starCon, score []string, ne
 	return name, infoList, starCon, score, ""
 }
 
-func Run() {
+func Run() (err error) {
 	var names []string
 	var startCons []string
 	var scores []string
@@ -80,6 +80,6 @@ func Run() {
 		row.AddCell().Value = scores[i]
 		row.AddCell().Value = infos[i]
 	}
-
-	file.Save("./douban/doubanTop250.xlsx")
+	err = file.Save("doubanTop250.xlsx")
+	return err
 }
