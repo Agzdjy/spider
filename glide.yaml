@@ -1,0 +1,6 @@
+package: spider
+import:
+- package: github.com/PuerkitoBio/goquery
+  version: v1.1.0
+- package: github.com/tealeg/xlsx
+  version: v1.0.3
