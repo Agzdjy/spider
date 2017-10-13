@@ -2,28 +2,29 @@ package ziroom
 
 import (
 	"fmt"
-	"strings"
-	"github.com/PuerkitoBio/goquery"
-	"github.com/tealeg/xlsx"
 	"regexp"
 	"spider/util"
+	"strings"
+
+	"github.com/PuerkitoBio/goquery"
+	"github.com/tealeg/xlsx"
 )
 
 const DOWNLOAD_URL = "http://www.ziroom.com/z/nl/z2.html?qwd="
 
 type ziroom struct {
-	hoseName string;
-	subWay string;
-	subWayDistance string;
-	area string;
-	rooms string;
-	price string;
-	rentType string;
-	tags string;
-	link string;
+	hoseName       string
+	subWay         string
+	subWayDistance string
+	area           string
+	rooms          string
+	price          string
+	rentType       string
+	tags           string
+	link           string
 }
 
-func parseInfo(url string) (zirooms []ziroom, nextPage string)  {
+func parseInfo(url string) (zirooms []ziroom, nextPage string) {
 	fmt.Println(url)
 	doc, err := goquery.NewDocument(url)
 
@@ -83,7 +84,7 @@ func Run() (err error) {
 		url = DOWNLOAD_URL + query
 	}
 
-	for ; url != ""; {
+	for url != "" {
 		zirooms, nextPage := parseInfo(url)
 		url = nextPage
 		allZirooms = append(allZirooms, zirooms...)
@@ -123,5 +124,5 @@ func Run() (err error) {
 		fileName = query + ".xlsx"
 	}
 	err = file.Save(fileName)
- 	return err
+	return err
 }

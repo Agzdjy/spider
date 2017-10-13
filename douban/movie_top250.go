@@ -2,9 +2,10 @@ package douban
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/PuerkitoBio/goquery"
 	"github.com/tealeg/xlsx"
-	"strings"
 )
 
 const DOWNLOAD_URL = "https://movie.douban.com/top250/"
