@@ -1,22 +1,25 @@
 package main
 
 import (
-	"fmt"
-	"spider/douban"
-	"spider/ziroom"
+	"spider/v2ex"
 )
 
 func main() {
-	done := make(chan string, 2)
+	done := make(chan string, 1)
+
+	// go func() {
+	// 	douban.Run()
+	// 	done <- "douban"
+	// }()
+	// go func() {
+	// 	ziroom.Run()
+	// 	done <- "ziroom"
+	// }()
 
 	go func() {
-		douban.Run()
-		done <- "douban"
+		v2ex.Run()
+		done <- "v2ex"
 	}()
-	go func() {
-		ziroom.Run()
-		done <- "ziroom"
-	}()
-
-	fmt.Print(<-done, "--->", <-done)
+	<-done
+	// fmt.Print(<-done, "--->", <-done)
 }
