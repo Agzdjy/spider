@@ -3,6 +3,7 @@ package v2ex
 import (
 	"fmt"
 	"strconv"
+	"time"
 
 	"github.com/PuerkitoBio/goquery"
 )
@@ -42,6 +43,7 @@ func parseTablePage(tabUrl string, done chan string) {
 	tags := doc.Find("div#Main").Find("div.box").Find("div.cell").Eq(0).Find("a")
 	numOfTags := len(tags.Nodes)
 	listDone := make(chan string, numOfTags)
+
 	tags.Each(func(index int, s *goquery.Selection) {
 		url, _ := s.Attr("href")
 		go parseTagPage(domanURL+url, listDone)
@@ -50,10 +52,14 @@ func parseTablePage(tabUrl string, done chan string) {
 	for i := 0; i < numOfTags; i += 1 {
 		fmt.Println(<-listDone)
 	}
+	close(listDone)
 	done <- "table ok-->" + tabUrl
 }
 
 func parseTagPage(url string, done chan string) {
+	fmt.Println("------->parseTagPage")
+	time.Sleep(500 * time.Millisecond)
+
 	doc, err := goquery.NewDocument(url)
 	if err != nil {
 		done <- "failed"
@@ -63,17 +69,21 @@ func parseTagPage(url string, done chan string) {
 	maxPage, _ := strconv.Atoi(as.Eq(len(as.Nodes) - 1).Text())
 
 	pageDone := make(chan string, maxPage)
+
 	for page := 1; page <= maxPage; page += 1 {
 		go parseListPage(url+"?p="+strconv.Itoa(page), pageDone)
 	}
 
-	for i := 0; i < maxPage; i += 1 {
+	for i := 1; i <= maxPage; i += 1 {
 		fmt.Println(<-pageDone)
 	}
+	close(pageDone)
 	done <- "tag ok--->" + url
 }
 
 func parseListPage(url string, done chan string) {
+	time.Sleep(2 * time.Second)
+
 	doc, err := goquery.NewDocument(url)
 	if err != nil {
 		done <- "failed"
@@ -82,8 +92,9 @@ func parseListPage(url string, done chan string) {
 	topicsNodes := doc.Find("div#TopicsNode").Find("div.cell")
 	topicsNodes.Each(func(index int, s *goquery.Selection) {
 		title := s.Find("table").Find("tbody").Find("tr").Find("td").Eq(2).Find("a").Eq(0).Text()
-		fmt.Println(title)
+		fmt.Println(url, "---->", title)
 	})
+	fmt.Println("------->, over")
 	done <- "list ok-->" + url
 }
 
