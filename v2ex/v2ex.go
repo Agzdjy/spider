@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"time"
 
+	"spider/util"
+
 	"github.com/PuerkitoBio/goquery"
 )
 
@@ -35,7 +37,8 @@ var tabUrls = []string{
 var v2exs []v2ex = []v2ex{}
 
 func parseTablePage(tabUrl string, done chan string) {
-	doc, err := goquery.NewDocument(tabUrl)
+	response := util.PorxyGet(tabUrl)
+	doc, err := goquery.NewDocumentFromResponse(response)
 	if err != nil {
 		done <- "failed"
 	}
@@ -60,7 +63,8 @@ func parseTagPage(url string, done chan string) {
 	fmt.Println("------->parseTagPage")
 	time.Sleep(500 * time.Millisecond)
 
-	doc, err := goquery.NewDocument(url)
+	response := util.PorxyGet(url)
+	doc, err := goquery.NewDocumentFromResponse(response)
 	if err != nil {
 		done <- "failed"
 	}
@@ -84,7 +88,8 @@ func parseTagPage(url string, done chan string) {
 func parseListPage(url string, done chan string) {
 	time.Sleep(2 * time.Second)
 
-	doc, err := goquery.NewDocument(url)
+	response := util.PorxyGet(url)
+	doc, err := goquery.NewDocumentFromResponse(response)
 	if err != nil {
 		done <- "failed"
 	}
