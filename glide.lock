@@ -1,8 +1,23 @@
-hash: f2710fd0cadc56c196a3d16b5cd0bae1ea65913098b10daa05120e0976169054
-updated: 2017-10-13T15:55:40.126356+08:00
+hash: 248515ef826b3c795eec19292ff9a1193835768b15bc7c2cda7490bacfe68517
+updated: 2017-11-17T10:50:44.754785+08:00
 imports:
+- name: github.com/Agzdjy/proxy-pool
+  version: 3c3e1ab034ee10d29b60d64278e638ae2cb29849
+  subpackages:
+  - model
+  - spider
+  - storage
+  - util
 - name: github.com/andybalholm/cascadia
   version: 349dd0209470eabd9514242c688c403c0926d266
+- name: github.com/go-redis/redis
+  version: d0f86971b5d61de9cebd2616b932acb7ba14d957
+  subpackages:
+  - internal
+  - internal/consistenthash
+  - internal/hashtag
+  - internal/pool
+  - internal/proto
 - name: github.com/PuerkitoBio/goquery
   version: e1271ee34c6a305e38566ecd27ae374944907ee9
 - name: github.com/tealeg/xlsx
@@ -12,4 +27,8 @@ imports:
   subpackages:
   - html
   - html/atom
+- name: spider/util
+  version: ""
+- name: spider/v2ex
+  version: ""
 testImports: []
