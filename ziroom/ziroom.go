@@ -12,7 +12,7 @@ import (
 
 const DOWNLOAD_URL = "http://www.ziroom.com/z/nl/z2.html?qwd="
 
-type ziroom struct {
+type Ziroom struct {
 	hoseName       string
 	subWay         string
 	subWayDistance string
@@ -24,7 +24,7 @@ type ziroom struct {
 	link           string
 }
 
-func parseInfo(url string) (zirooms []ziroom, nextPage string) {
+func parseInfo(url string) (zirooms []Ziroom, nextPage string) {
 	fmt.Println(url)
 	doc, err := goquery.NewDocument(url)
 
@@ -36,7 +36,7 @@ func parseInfo(url string) (zirooms []ziroom, nextPage string) {
 	hostList := doc.Find("ul#houseList")
 
 	hostList.Find("li.clearfix").Each(func(i int, s *goquery.Selection) {
-		ziroom := ziroom{}
+		ziroom := Ziroom{}
 		numReg, _ := regexp.Compile("[0-9]+")
 
 		txt := s.Find("div.txt")
@@ -75,8 +75,8 @@ func parseInfo(url string) (zirooms []ziroom, nextPage string) {
 	return zirooms, nextPage
 }
 
-func Run() (err error) {
-	var allZirooms []ziroom
+func (zi *Ziroom) Run() {
+	var allZirooms []Ziroom
 	query := util.GetEnv("query")
 
 	url := DOWNLOAD_URL
@@ -123,6 +123,5 @@ func Run() (err error) {
 	if query != "" {
 		fileName = query + ".xlsx"
 	}
-	err = file.Save(fileName)
-	return err
+	_ = file.Save(fileName)
 }

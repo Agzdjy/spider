@@ -5,7 +5,8 @@ import (
 )
 
 func TestRun(t *testing.T) {
-	err := Run()
+	douban := &Douban{}
+	err := douban.Run()
 
 	if err != nil {
 		t.Error("douban movie top 250 error", err)

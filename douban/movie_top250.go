@@ -10,6 +10,8 @@ import (
 
 const DOWNLOAD_URL = "https://movie.douban.com/top250/"
 
+type Douban struct{}
+
 func parseInfo(url string) (name, infoList []string, starCon, score []string, nextPage string) {
 	fmt.Println(url)
 	doc, err := goquery.NewDocument(url)
@@ -48,7 +50,7 @@ func parseInfo(url string) (name, infoList []string, starCon, score []string, ne
 	return name, infoList, starCon, score, ""
 }
 
-func Run() (err error) {
+func (dou *Douban) Run() {
 	var names []string
 	var startCons []string
 	var scores []string
@@ -81,6 +83,5 @@ func Run() (err error) {
 		row.AddCell().Value = scores[i]
 		row.AddCell().Value = infos[i]
 	}
-	err = file.Save("doubanTop250.xlsx")
-	return err
+	_ = file.Save("doubanTop250.xlsx")
 }

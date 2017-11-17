@@ -5,7 +5,8 @@ import (
 )
 
 func TestRun(t *testing.T) {
-	err := Run()
+	ziroom := &Ziroom{}
+	err := ziroom.Run()
 
 	if err != nil {
 		t.Error("ziroom error", err)

@@ -7,18 +7,27 @@ import (
 
 	"time"
 
+	"runtime"
+
+	"path"
+
 	"github.com/Agzdjy/proxy-pool"
 )
 
 func init() {
+	proxypool.InitData(path.Join(getCurrentDir(), "../config/config.json"))
+}
 
-	proxypool.InitData("./config/config.json")
+func getCurrentDir() string {
+	_, filename, _, _ := runtime.Caller(0)
+	return path.Join(path.Dir(filename))
 }
 
 func PorxyGet(requestUrl string) (resp *http.Response) {
 	proxyIp := proxypool.Range("http")
 	proxy := proxyIp.Protocol + "://" + proxyIp.Address + ":" + proxyIp.Port
 	if !proxypool.Check(proxy) {
+		fmt.Println("check error")
 		return PorxyGet(requestUrl)
 	}
 
