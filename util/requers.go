@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-
 	"time"
 
 	"runtime"
@@ -23,16 +22,15 @@ func getCurrentDir() string {
 	return path.Join(path.Dir(filename))
 }
 
-func PorxyGet(requestUrl string) (resp *http.Response) {
+func PorxyGet(requestUrl string) (res *http.Response) {
 	proxyIp := proxypool.Range("http")
 	proxy := proxyIp.Protocol + "://" + proxyIp.Address + ":" + proxyIp.Port
 	if !proxypool.Check(proxy) {
-		fmt.Println("check error")
+		//fmt.Println("check error")
 		return PorxyGet(requestUrl)
 	}
 
 	proxyUrl, _ := url.Parse(proxy)
-
 	tr := &http.Transport{
 		Proxy: http.ProxyURL(proxyUrl),
 	}
@@ -45,11 +43,11 @@ func PorxyGet(requestUrl string) (resp *http.Response) {
 	req, _ := http.NewRequest("GET", requestUrl, nil)
 	req.Header.Set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36")
 
-	resq, err := client.Do(req)
-	if err != nil {
-		fmt.Println("--->", err)
+	res, err := client.Do(req)
+	if err != nil || res == nil {
 		return PorxyGet(requestUrl)
 	}
+	fmt.Println("success--->", requestUrl)
 
-	return resq
+	return res
 }
